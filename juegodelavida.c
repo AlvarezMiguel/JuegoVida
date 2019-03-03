@@ -23,5 +23,18 @@ int main () {
 		for(j=0;j<colum;j++) {
 			aux[i][j]=0;
 			aux2[i][j]=0;
+
 		}
+	
+	for(i=0;i<ren;i++) //Hacemos . todo el arreglo
+		for(j=0;j<colum;j++) 
+			arr[i][j]='.';
+	
+	for(i=0;i<ren;i++){ //Primer arreglo con vidas aleatoreas
+		for(j=0;j<colum;j++) {
+			num=rand()% ren;
+			num2=rand()% colum;
+			arr[num][num2]='@';
+		}
+	}
 }
