@@ -2,7 +2,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include <time.h>
-//#include <windows.h>  //solo para windows 
+#include <unistd.h>
 =======
 /*#include <stdlib.h>
 #include <stdio.h>
@@ -106,4 +106,12 @@ int main () {
 	scanf("%d",&colum);
 	char arr[ren][colum];
 	int aux[ren][colum], aux2[ren][colum];
+
+	srand(time(NULL));
+	
+	for(i=0;i<ren;i++) //Llenamos el arreglo auxiliar de 0s
+		for(j=0;j<colum;j++) {
+			aux[i][j]=0;
+			aux2[i][j]=0;
+		}
 }
