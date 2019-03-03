@@ -12,7 +12,7 @@ int main ()
 	scanf("%d",&columnas);
 	printf("\nIngrese el número de filas: ");
 	scanf("%d",&filas);
-	 
 
-	//scanf()
+j//fjigdifngs
+omm
 } 
