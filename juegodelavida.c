@@ -34,13 +34,15 @@ int main () {
 	printf("De que tamaño quieres las columnas del tablero? ");
 	scanf("%d",&colum);
 	char arr[ren][colum];
-	int aux[ren][colum];
+	int aux[ren][colum], aux2[ren][colum];
 	
 	srand(time(NULL));
 	
 	for(i=0;i<ren;i++) //Llenamos el arreglo auxiliar de 0s
-		for(j=0;j<colum;j++) 
+		for(j=0;j<colum;j++) {
 			aux[i][j]=0;
+			aux2[i][j]=0;
+		}
 	
 	for(i=0;i<ren;i++) //Hacemos . todo el arreglo
 		for(j=0;j<colum;j++) 
@@ -58,30 +60,76 @@ int main () {
 	
    //Comparar vidas derecha 	
 	for(i=0;i<ren;i++) {
-		for(j=0;j<colum;j++) {
+		for(j=0;j<colum-1;j++) {
 			if(arr[i][j]=='@') {
-				if(arr[i][j]==arr[i+1][j+1]) { //Uno igual 
-					aux[ren][colum]++;
-					if(arr[i+1][j+1]==arr[i+2][j+2]) { //Dos igual 
-						aux[ren][colum]++;
-						if(arr[i+2][j+2]==arr[i+3][j+3]) { //Tres igual 
-							aux[ren][colum]++;
-							if(arr[i+3][j+3]==arr[i+4][j+4]) { //Cuatro igual (Muere por sobrepoblación) 
-								cont++;
-								arr[i][j]='.';
-								aux[i][j]=0;
-							}
-						}
-					}
+				if(arr[i][j]==arr[i][j+1]) {
+					aux[i][j]++;
 				}
 			}
 		}
 	}
-	//tiempo = clock();
+	
+	//Comparar vidas izquierda
+	for(i=0;i<ren;i++) {
+		for(j=colum-1;j>0;j--) {
+			if(arr[i][j]=='@') {
+				if(arr[i][j]==arr[i][j-1]) {
+					aux[i][j]++;
+				}
+			}
+		}
+	}
+	
+	//Compara vidas arriba
+	for(i=1;i<ren;i++) {
+		for(j=0;j<ren;j++) {
+			if(arr[i][j]=='@') {
+				if(arr[i][j]==arr[i-1][j]) {
+					aux[i][j]++;
+				}
+			}
+		}
+	}
+	
+	//Compara vidas abajo
+	for(i=0;i<ren;i++) {
+		for(j=0;j<colum;j++) {
+			if(arr[i][j]=='@') {
+				if(arr[i][j]==arr[i+1][j]) {
+					aux[i][j]++;
+				}
+			}
+		}
+	}
+	
+	printf("Otra vez el arreglo:\n");
+	//imprimir(arr,ren,colum);
+	printf("\n\n");
+	for(i=0;i<ren;i++) {
+		for(j=0;j<colum;j++) {
+			printf("%d\t",aux[i][j]);
+		}
+		printf("\n");
+	}
 	Sleep(3000);
-	printf("Otra vez el arreglo:\n");
-	imprimir(arr,ren,colum);
-	printf("Otra vez el arreglo:\n");
+	
+	printf("Vamos a matar a las celulas\n");
+	for(i=0;i<ren;i++) {
+		for(j=0;j<colum;j++) {
+			if(aux[i][j]>3){ //Muere de sobrepoblacion 
+				arr[i][j]='.'; 
+			}
+			else if(aux[i][j]<2){
+				arr[i][j]='.'; //Muere de soledad
+			}
+		}
+	}
+	
+	//Para revivir celulas
+	
+	
+	
+	printf("Nuevo arreglo:\n");
 	imprimir(arr,ren,colum);
 	
 	
