@@ -98,3 +98,10 @@ void imprimir(char arr[][5],int ren,int colum) {
 	}
 }
 
+//esta no es una oración
+
+
+
+
+
+
