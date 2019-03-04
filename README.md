@@ -1,1 +1,8 @@
-# Juego de la vida
+#**El juego de la vida**  
+##Proyecto del curso de C  
+
+##Integrantes:  
+###Álvarez Gómez Rolando Miguel  
+###Reynoso Gálvez Ana Laura  
+
+
