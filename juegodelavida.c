@@ -3,16 +3,18 @@
 #include <time.h>
 #include <unistd.h>
 
-void imprimir(char arr[][5],int ren,int colum);
-void imprimirAux(int aux[][5],int ren,int colum);
-void llenarcon0(int aux[][5], int aux2[][5], int ren, int colum);
-void llenarAleatorio(char arr[][5],int ren,int colum);
-void celulasVivas(char arr[][5],int aux[][5],int ren, int colum);
-void matarCelulas(char arr[][5],int aux[][5],int ren, int colum);
+void imprimir(char arr[][10],int ren,int colum);
+void imprimirAux(int aux[][10],int ren,int colum);
+void llenarcon0(int aux[][10], int aux2[][10], int ren, int colum);
+void llenarAleatorio(char arr[][10],int ren,int colum);
+void celulasVivas(char arr[][10],int aux[][10],int ren, int colum);
+void matarCelulas(char arr[][10],int aux[][10],int ren, int colum);
+void celulasMuertas(char arr[][10],int aux2[][10],int ren, int colum);
+void revivirCelulas(char arr[][10],int aux2[][10],int ren, int colum);
 
 int main () {
 	int ren,colum,i,j;
-	int cont=0;
+	int repe,cont=0;
 	printf("JUEGO DE LA VIDA\n");
 	printf("De que tamaño quieres los renglones del tablero? ");
 	scanf("%d",&ren);
@@ -24,19 +26,33 @@ int main () {
 
 	llenarcon0(aux,aux2,ren,colum);
 	llenarAleatorio(arr,ren,colum);
+
 	printf("Inicia el juego\n");
 	imprimir(arr,ren,colum);
-	celulasVivas(arr,aux,ren,colum);
-	printf("\n");
-	imprimirAux(aux,ren,colum);
-	printf("\nVamos a matar a las celulas\n");
-	matarCelulas(arr,aux,ren,colum);
-	imprimir(arr,ren,colum);
+
+	do {
+		printf("\n");
+		printf("****** Round %d ******",cont+1);
+		//imprimirAux(aux,ren,colum);
+		printf("\nVamos a matar a las celulas...\n");
+		sleep(2);
+		celulasVivas(arr,aux,ren,colum);
+		matarCelulas(arr,aux,ren,colum);
+		imprimir(arr,ren,colum);
+		printf("\nVamos a revivir a las celulas...\n");
+		sleep(2);
+		celulasMuertas(arr,aux2,ren,colum);
+		//imprimirAux(aux2,ren,colum);
+		revivirCelulas(arr,aux2,ren,colum);
+		imprimir(arr,ren,colum);
+		llenarcon0(aux,aux2,ren,colum);
+		cont++;
+	}while(cont!=repe);
 
 	return 0;
 }
 
-void imprimir(char arr[][5],int ren,int colum) {
+void imprimir(char arr[][10],int ren,int colum) {
 	int i,j;
 	for(i=0; i<ren;i++) {
 		for(j=0;j<colum;j++) {
@@ -46,7 +62,7 @@ void imprimir(char arr[][5],int ren,int colum) {
 	}
 }
 
-void imprimirAux(int aux[][5],int ren,int colum) {
+void imprimirAux(int aux[][10],int ren,int colum) {
 	int i,j;
 	for(i=0; i<ren;i++) {
 		for(j=0;j<colum;j++) {
@@ -56,7 +72,7 @@ void imprimirAux(int aux[][5],int ren,int colum) {
 	}
 }
 
-void llenarcon0(int aux[][5], int aux2[][5], int ren, int colum) {
+void llenarcon0(int aux[][10], int aux2[][10], int ren, int colum) {
 	int i,j;
 	for(i=0;i<ren;i++) //Llenamos el arreglo auxiliar de 0s
 		for(j=0;j<colum;j++) {
@@ -65,7 +81,7 @@ void llenarcon0(int aux[][5], int aux2[][5], int ren, int colum) {
 		}
 }
 
-void llenarAleatorio(char arr[][5],int ren,int colum) {
+void llenarAleatorio(char arr[][10],int ren,int colum) {
 	int i,j,num,num2;
 	srand(time(NULL));
 	for(i=0;i<ren;i++) //Hacemos . todo el arreglo
@@ -81,7 +97,7 @@ void llenarAleatorio(char arr[][5],int ren,int colum) {
 	}
 }
 
-void celulasVivas(char arr[][5],int aux[][5],int ren, int colum){
+void celulasVivas(char arr[][10],int aux[][10],int ren, int colum){
 	int i,j;
 	//Comparar vidas derecha 	
 	for(i=0;i<ren;i++) {
@@ -125,7 +141,7 @@ void celulasVivas(char arr[][5],int aux[][5],int ren, int colum){
 	}
 }
 
-void matarCelulas(char arr[][5],int aux[][5],int ren, int colum){
+void matarCelulas(char arr[][10],int aux[][10],int ren, int colum){
 	int i,j;
 	for(i=0;i<ren;i++) {
 		for(j=0;j<colum;j++) {
@@ -134,6 +150,61 @@ void matarCelulas(char arr[][5],int aux[][5],int ren, int colum){
 			}
 			else if(aux[i][j]<2){
 				arr[i][j]='.'; //Muere de soledad
+			}
+		}
+	}
+}
+
+void celulasMuertas(char arr[][10],int aux2[][10],int ren, int colum) {
+	int i,j;
+	//Comparar muertas derecha 	
+	for(i=0;i<ren;i++) {
+		for(j=0;j<colum-1;j++) {
+			if(arr[i][j]=='.') {
+				if(arr[i][j+1]=='@') {
+					aux2[i][j]++;
+				}
+			}
+		}
+	}
+	//Comparar muertas izquierda
+	for(i=0;i<ren;i++) {
+		for(j=colum-1;j>0;j--) {
+			if(arr[i][j]=='.') {
+				if(arr[i][j-1]=='@') {
+					aux2[i][j]++;
+				}
+			}
+		}
+	}
+	//Compara muertas arriba
+	for(i=1;i<ren;i++) {
+		for(j=0;j<ren;j++) {
+			if(arr[i][j]=='.') {
+				if(arr[i-1][j]=='@') {
+					aux2[i][j]++;
+				}
+			}
+		}
+	}
+	//Compara muertas abajo
+	for(i=0;i<ren;i++) {
+		for(j=0;j<colum;j++) {
+			if(arr[i][j]=='.') {
+				if(arr[i+1][j]=='@') {
+					aux2[i][j]++;
+				}
+			}
+		}
+	}
+}
+
+void revivirCelulas(char arr[][10],int aux2[][10],int ren, int colum){
+	int i,j;
+	for(i=0;i<ren;i++) {
+		for(j=0;j<colum;j++){
+			if(aux2[i][j]>2){
+				arr[i][j]='@';
 			}
 		}
 	}
