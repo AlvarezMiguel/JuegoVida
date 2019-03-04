@@ -7,6 +7,8 @@ void imprimir(char arr[][5],int ren,int colum);
 void imprimirAux(int aux[][5],int ren,int colum);
 void llenarcon0(int aux[][5], int aux2[][5], int ren, int colum);
 void llenarAleatorio(char arr[][5],int ren,int colum);
+void celulasVivas(char arr[][5],int aux[][5],int ren, int colum);
+void matarCelulas(char arr[][5],int aux[][5],int ren, int colum);
 
 int main () {
 	int ren,colum,i,j;
@@ -21,8 +23,14 @@ int main () {
 	srand(time(NULL));
 
 	llenarcon0(aux,aux2,ren,colum);
-	//imprimirAux(aux,ren,colum);
 	llenarAleatorio(arr,ren,colum);
+	printf("Inicia el juego\n");
+	imprimir(arr,ren,colum);
+	celulasVivas(arr,aux,ren,colum);
+	printf("\n");
+	imprimirAux(aux,ren,colum);
+	printf("\nVamos a matar a las celulas\n");
+	matarCelulas(arr,aux,ren,colum);
 	imprimir(arr,ren,colum);
 
 	return 0;
@@ -69,6 +77,64 @@ void llenarAleatorio(char arr[][5],int ren,int colum) {
 			num=rand()% ren;
 			num2=rand()% colum;
 			arr[num][num2]='@';
+		}
+	}
+}
+
+void celulasVivas(char arr[][5],int aux[][5],int ren, int colum){
+	int i,j;
+	//Comparar vidas derecha 	
+	for(i=0;i<ren;i++) {
+		for(j=0;j<colum-1;j++) {
+			if(arr[i][j]=='@') {
+				if(arr[i][j]==arr[i][j+1]) {
+					aux[i][j]++;
+				}
+			}
+		}
+	}
+	//Comparar vidas izquierda
+	for(i=0;i<ren;i++) {
+		for(j=colum-1;j>0;j--) {
+			if(arr[i][j]=='@') {
+				if(arr[i][j]==arr[i][j-1]) {
+					aux[i][j]++;
+				}
+			}
+		}
+	}
+	//Compara vidas arriba
+	for(i=1;i<ren;i++) {
+		for(j=0;j<ren;j++) {
+			if(arr[i][j]=='@') {
+				if(arr[i][j]==arr[i-1][j]) {
+					aux[i][j]++;
+				}
+			}
+		}
+	}
+	//Compara vidas abajo
+	for(i=0;i<ren;i++) {
+		for(j=0;j<colum;j++) {
+			if(arr[i][j]=='@') {
+				if(arr[i][j]==arr[i+1][j]) {
+					aux[i][j]++;
+				}
+			}
+		}
+	}
+}
+
+void matarCelulas(char arr[][5],int aux[][5],int ren, int colum){
+	int i,j;
+	for(i=0;i<ren;i++) {
+		for(j=0;j<colum;j++) {
+			if(aux[i][j]>3){ //Muere de sobrepoblacion 
+				arr[i][j]='.'; 
+			}
+			else if(aux[i][j]<2){
+				arr[i][j]='.'; //Muere de soledad
+			}
 		}
 	}
 }
