@@ -38,3 +38,28 @@ int main () {
 		}
 	}
 }
+
+
+imprimir(arr,ren,colum);
+	
+   //Comparar vidas derecha 	
+	for(i=0;i<ren;i++) {
+		for(j=0;j<colum-1;j++) {
+			if(arr[i][j]=='@') {
+				if(arr[i][j]==arr[i][j+1]) {
+					aux[i][j]++;
+				}
+			}
+		}
+	}
+	
+	//Comparar vidas izquierda
+	for(i=0;i<ren;i++) {
+		for(j=colum-1;j>0;j--) {
+			if(arr[i][j]=='@') {
+				if(arr[i][j]==arr[i][j-1]) {
+					aux[i][j]++;
+				}
+			}
+		}
+	}
