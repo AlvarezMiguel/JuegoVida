@@ -1,4 +1,4 @@
-#v**El juego de la vida**  
+# **El juego de la vida**  
 ## Proyecto del curso de C  
 
 ## Integrantes:  
